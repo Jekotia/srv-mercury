@@ -28,7 +28,7 @@ source ${_SCRIPT_INIT}
 	puppet module install saz-sudo --version 5.0.0
 	puppet module install saz-ssh --version 4.0.0
 
-	puppet apply ${_PUPPET_MERCURY_MANIFESTS}
+	puppet apply ${_PUPPET_ROOT}/manifests
 
 	#-# User Setup
 	#user_add_sudo "${new_user_name}" "${new_user_pass}"
