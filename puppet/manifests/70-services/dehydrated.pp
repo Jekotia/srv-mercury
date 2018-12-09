@@ -37,6 +37,11 @@ package { "curl":		ensure  => "installed" }
 package { "libffi-dev":		ensure  => "installed" }
 package { "libssl-dev":		ensure  => "installed" }
 
+ensure_packages(['pyOpenSSL'], {
+	ensure   => absent,
+	provider => 'pip3',
+})
+
 ensure_packages(['requests[security]', 'dns-lexicon'], {
 	ensure   => present,
 	provider => 'pip3',
