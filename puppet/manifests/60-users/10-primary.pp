@@ -1,5 +1,3 @@
-$_USER = "jekotia"
-
 package { "zsh":	ensure	=> "installed" }
 
 user { "$_USER":
