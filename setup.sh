@@ -3,8 +3,8 @@ if ! git --version  > /dev/null 2>&1 ; then
 	apt install -y git
 fi
 
-if ! ifconfig --version  > /dev/null 2>&1 ; then
-	apt install -y net-tools
+if ! dig --version  > /dev/null 2>&1 ; then
+	apt install -y dnsutils
 fi
 
 git clone https://github.com/Jekotia/srv-common.git /srv/common
