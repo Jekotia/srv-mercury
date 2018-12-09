@@ -23,6 +23,16 @@ file { "/etc/nginx":
 	target		=> "$_NGINX_DATA",
 }
 
+file { "server data folder":
+	path		=> "$_DATA",
+	ensure		=> "directory",
+}
+
+file { "server logs folder":
+	path		=> "$_LOGS",
+	ensure		=> "directory",
+}
+
 class { 'ssh::server':
   storeconfigs_enabled => false,
   options => {
