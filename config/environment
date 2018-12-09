@@ -1,5 +1,3 @@
-source /srv/common/config/environment
-
 env['_NAME']="mercury"
 env['_ROOT']="${env['_SRV']}/${env['_NAME']}"
 env['_ROOT_CONFIG']="${env['_ROOT']}/config"
@@ -32,9 +30,9 @@ env['_DISCORDIRC_UID']="2137"
 env['_DISCORDIRC_GID']="${env['_DISCORDIRC_UID']}"
 
 env['_GOGS_DATA']="${env['_DATA']}/gogs"
-env['_GOGS_USER']="gogs" #"${_USER']}"
+env['_GOGS_USER']="gogs" #"${env['_USER']}"
 env['_GOGS_GROUP']="${env['_GOGS_USER']}"
-env['_GOGS_UID']="${_UID']}" #env['_GOGS_UID']="2252"
+env['_GOGS_UID']="${env['_UID']}" #env['_GOGS_UID']="2252"
 env['_GOGS_GID']="${env['_GOGS_UID']}"
 
 #env['_HASS_DATA']="${env['_DATA']}/hass"
@@ -68,7 +66,7 @@ env['_PROXY_UID']="2665"
 env['_PROXY_GID']="${env['_PROXY_UID']}"
 
 env['_WEECHAT_DATA']="${env['_DATA']}/weechat"
-env['_WEECHAT_USER']']="weechat"
+env['_WEECHAT_USER']="weechat"
 env['_WEECHAT_GROUP']="${env['_WEECHAT_USER']}"
 env['_WEECHAT_UID']="2811"
 env['_WEECHAT_GID']="${env['_WEECHAT_UID']}"
