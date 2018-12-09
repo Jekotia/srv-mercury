@@ -1,6 +1,10 @@
 #! /bin/bash
-if ! git --version ; then
+if ! git --version  > /dev/null 2>&1 ; then
 	apt install -y git
+fi
+
+if ! ifconfig --version  > /dev/null 2>&1 ; then
+	apt install -y net-tools
 fi
 
 git clone https://github.com/Jekotia/srv-common.git /srv/common
