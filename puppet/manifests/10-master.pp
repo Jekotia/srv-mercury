@@ -23,10 +23,6 @@ file { "/etc/nginx":
 	target		=> "$_NGINX_DATA",
 }
 
-
-package { "git":	ensure	=> "installed" }
-
-
 class { 'ssh::server':
   storeconfigs_enabled => false,
   options => {
