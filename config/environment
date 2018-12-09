@@ -40,7 +40,7 @@ env['_GOGS_GID']="${env['_GOGS_UID']}"
 #env['_HASS_DATA']="${env['_DATA']}/hass"
 #env['_HASS_USER']="hass" #"${env['_USER']}"
 #env['_HASS_GROUP']="${env['_HASS_USER']}"
-#env['_HASS_UID']="${_UID']}" #env['_HASS_UID']="2307"
+#env['_HASS_UID']="${env['_UID']}" #env['_HASS_UID']="2307"
 #env['_HASS_GID']="${env['_HASS_UID']}"
 
 env['_MYSQL_DATA']="${env['_DATA']}/mysql"
