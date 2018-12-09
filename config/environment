@@ -5,7 +5,7 @@ env['_ROOT']="${env['_SRV']}/${env['_NAME']}"
 env['_ROOT_CONFIG']="${env['_ROOT']}/config"
 
 env['_PUPPET_ROOT']="${env['_ROOT']}/puppet" # root for puppet files
-env['_PUPPET_ENV']="env['_PUPPET_ROOT']/manifests/00-environment.pp"
+env['_PUPPET_ENV']="${env['_PUPPET_ROOT']}/manifests/00-environment.pp"
 
 env['_ALERTHUB_DATA']="${env['_DATA']}/alerthub"
 env['_ALERTHUB_USER']="alerthub"
