@@ -1,0 +1,74 @@
+source /srv/common/config/environment
+
+env['_NAME']="mercury"
+env['_ROOT']="${env['_SRV']}/${env['_NAME']}"
+env['_ROOT_CONFIG']="${env['_ROOT']}/config"
+
+env['_PUPPET_ROOT']="${env['_ROOT']}/puppet" # root for puppet files
+env['_PUPPET_ENV']="env['_PUPPET_ROOT']/manifests/00-environment.pp"
+
+env['_ALERTHUB_DATA']="${env['_DATA']}/alerthub"
+env['_ALERTHUB_USER']="alerthub"
+env['_ALERTHUB_GROUP']="${env['_ALERTHUB_USER']}"
+env['_ALERTHUB_UID']="2041"
+env['_ALERTHUB_GID']="${env['_ALERTHUB_UID']}"
+
+env['_COMMAFEED_DATA']="${env['_DATA']}/commafeed"
+env['_COMMAFEED_USER']="commafeed"
+env['_COMMAFEED_GROUP']="${env['_COMMAFEED_USER']}"
+env['_COMMAFEED_UID']="2155"
+env['_COMMAFEED_GID']="${env['_COMMAFEED_UID']}"
+
+env['_DEHYDRATED_DATA']="${env['_SSL_DATA']}"
+env['_DEHYDRATED_USER']="dehydrated"
+env['_DEHYDRATED_GROUP']="${env['_DEHYDRATED_USER']}"
+env['_DEHYDRATED_UID']="2113"
+env['_DEHYDRATED_GID']="${env['_DEHYDRATED_UID']}"
+
+env['_DISCORDIRC_DATA']="${env['_DATA']}/discord-irc"
+env['_DISCORDIRC_USER']="discord-irc"
+env['_DISCORDIRC_GROUP']="${env['_DISCORDIRC_USER']}"
+env['_DISCORDIRC_UID']="2137"
+env['_DISCORDIRC_GID']="${env['_DISCORDIRC_UID']}"
+
+env['_GOGS_DATA']="${env['_DATA']}/gogs"
+env['_GOGS_USER']="gogs" #"${_USER']}"
+env['_GOGS_GROUP']="${env['_GOGS_USER']}"
+env['_GOGS_UID']="${_UID']}" #env['_GOGS_UID']="2252"
+env['_GOGS_GID']="${env['_GOGS_UID']}"
+
+#env['_HASS_DATA']="${env['_DATA']}/hass"
+#env['_HASS_USER']="hass" #"${_USER']}"
+#env['_HASS_GROUP']="${env['_HASS_USER']}"
+#env['_HASS_UID']="${_UID']}" #env['_HASS_UID']="2307"
+#env['_HASS_GID']="${env['_HASS_UID']}"
+
+env['_MYSQL_DATA']="${env['_DATA']}/mysql"
+env['_MYSQL_USER']="mysql"
+env['_MYSQL_GROUP']="${env['_MYSQL_USER']}"
+env['_MYSQL_UID']="2597"
+env['_MYSQL_GID']="${env['_MYSQL_UID']}"
+
+env['_NGINX_DATA']="${env['_DATA']}/nginx"
+env['_NGINX_USER']="nginx"
+env['_NGINX_GROUP']="${env['_NGINX_USER']}"
+env['_NGINX_UID']="523"
+env['_NGINX_GID']="${env['_NGINX_UID']}"
+
+env['_PORTAINER_DATA']="${env['_DATA']}/portainer"
+env['_PORTAINER_USER']="portainer"
+env['_PORTAINER_GROUP']="${env['_PORTAINER_USER']}"
+env['_PORTAINER_UID']="2656"
+env['_PORTAINER_GID']="${env['_PORTAINER_UID']}"
+
+env['_PROXY_DATA']="${env['_DATA']}/proxy"
+env['_PROXY_USER']="proxy"
+env['_PROXY_GROUP']="${env['_PROXY_USER']}"
+env['_PROXY_UID']="2665"
+env['_PROXY_GID']="${env['_PROXY_UID']}"
+
+env['_WEECHAT_DATA']="${env['_DATA']}/weechat"
+env['_WEECHAT_USER']']="weechat"
+env['_WEECHAT_GROUP']="${env['_WEECHAT_USER']}"
+env['_WEECHAT_UID']="2811"
+env['_WEECHAT_GID']="${env['_WEECHAT_UID']}"
