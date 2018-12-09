@@ -15,7 +15,7 @@ git clone https://github.com/Jekotia/srv-common.git /srv/common
 #echo "_ROOT=/srv/mercury" >> /etc/environment
 
 #-# Setup the environment
-/srv/common/bin/build-environment
+source /srv/common/bin/build-environment
 
 #-# Source all functions
 source ${_SCRIPT_INIT}
