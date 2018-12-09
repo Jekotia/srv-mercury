@@ -23,6 +23,19 @@ file { "/etc/nginx":
 	target		=> "$_NGINX_DATA",
 }
 
+env['_DATA']="${env['_SRV']}/data" # Location of data directory
+env['_LOGS']="${env['_SRV']}/logs" # Location of logs directory
+
+file { "server data folder":
+	path		=> "$_DATA",
+	ensure		=> "directory",
+}
+
+file { "server logs folder":
+	path		=> "$_LOGS",
+	ensure		=> "directory",
+}
+
 class { 'ssh::server':
   storeconfigs_enabled => false,
   options => {
