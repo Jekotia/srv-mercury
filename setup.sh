@@ -27,6 +27,8 @@ source ${_SCRIPT_INIT}
 	puppet module install puppetlabs-docker --version 3.1.0
 	puppet module install saz-sudo --version 5.0.0
 	puppet module install saz-ssh --version 4.0.0
+	puppet module install puppet-python --version 2.2.2
+	puppet module install puppetlabs-vcsrepo --version 2.4.0
 
 	puppet apply ${_PUPPET_ROOT}/manifests
 

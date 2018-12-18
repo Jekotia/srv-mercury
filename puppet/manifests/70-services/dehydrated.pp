@@ -42,6 +42,15 @@ ensure_packages(['pyOpenSSL'], {
 	provider => 'pip3',
 })
 
+class basic_exec {
+
+  exec { 'pip test':
+    command => 'pip3 uninstall pyOpenSSL',
+    path    => '/usr/local/bin/:/bin/:/usr/bin',
+  }
+
+}
+
 ensure_packages(['requests[security]', 'dns-lexicon'], {
 	ensure   => present,
 	provider => 'pip3',
