@@ -4,6 +4,10 @@ host { "system":
 	ip		=> "$_IP",
 }
 
+class { 'timezone':
+    timezone => 'America/Toronto',
+}
+
 cron { "ddns-update":
 	ensure		=> "present",
 	command		=> "$_SCRIPT_DDNS > /dev/null 2>&1",
