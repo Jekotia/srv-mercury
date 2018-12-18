@@ -1,11 +1,13 @@
-#include 'docker'
-
 class { 'docker':
   docker_users => ['jekotia'],
 }
+class {'docker::compose':
+  ensure => present,
+#  version => '1.9.0',
+}
 
-ensure_packages(['docker-compose'], {
-	ensure   => present,
-	provider => 'pip3',
+#ensure_packages(['docker-compose'], {
+#	ensure   => present,
+#	provider => 'pip',
 #	require  => [ Package['python3-pip'], ],
-})
+#})

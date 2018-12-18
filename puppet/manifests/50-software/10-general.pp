@@ -3,7 +3,7 @@
 #package { "python3-venv":  ensure	=> "installed" }
 
 class { 'python' :
-  version    => 'system',
+  version    => '3.5',
   pip        => 'present',
   dev        => 'absent',
   virtualenv => 'present',
