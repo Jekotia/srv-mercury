@@ -32,7 +32,7 @@ file { "dehydrated data folder":
 }
 
 package { "build-essential":	ensure  => "installed" }
-package { "python-dev":		ensure  => "installed" }
+#package { "python-dev":		ensure  => "installed" }
 package { "curl":		ensure  => "installed" }
 package { "libffi-dev":		ensure  => "installed" }
 package { "libssl-dev":		ensure  => "installed" }
