@@ -5,7 +5,7 @@
 #  owner        => "jekotia",
 #  group        => "jekotia",
 #}
-file { "/srv/virtualenv":
+file { "$_VIRTUAL_ENV":
 	ensure		=> 'directory',
 	owner		=> 'root',
 }
