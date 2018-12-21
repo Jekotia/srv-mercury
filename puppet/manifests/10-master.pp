@@ -4,6 +4,11 @@ host { "system":
 	ip		=> "$_IP",
 }
 
+class {"hostname":
+        hostname        => "mercury",
+        domain          => "jekotia.net"
+}
+
 class { 'timezone':
     timezone => 'America/Toronto',
 }
