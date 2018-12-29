@@ -28,11 +28,10 @@ services:
     - "proxy"
     labels:
       com.centurylinklabs.watchtower.enable: "false"
-      caddy_1.address: mercury2.jekotia.net/docker/
+      caddy_1.address: mercury.jekotia.net/docker/
       caddy_1.targetport: "9000"
       caddy_1.proxy.transparent: ""
-
-      caddy_2.address: mercury2.jekotia.net/docker/api/websocket/
+      caddy_2.address: mercury.jekotia.net/docker/api/websocket/
       caddy_2.targetport: "9000"
       caddy_2.proxy.transparent: ""
       caddy_2.proxy.websocket: ""
