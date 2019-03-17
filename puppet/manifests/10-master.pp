@@ -42,11 +42,11 @@ file { "server logs folder":
 	ensure		=> "directory",
 }
 
-class { 'ssh::server':
-  storeconfigs_enabled => false,
-  options => {
-    'PasswordAuthentication' => 'no',
-    'PermitRootLogin'        => 'no',
+#class { 'ssh::server':
+#  storeconfigs_enabled => false,
+#  options => {
+#    'PasswordAuthentication' => 'no',
+#    'PermitRootLogin'        => 'no',
 #    'Port'                   => [22, 2222],
-  },
-}
+#  },
+#}
