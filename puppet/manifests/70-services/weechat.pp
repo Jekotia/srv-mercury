@@ -11,17 +11,17 @@ group { "$_WEECHAT_GROUP":
 	system		=> "true",
 }
 
-cron { "weechat-ssl":
-	ensure		=> "present",
-	command		=> "$_ROOT/ssl/relay.sh",
-	user		=> "root",
-	minute		=> "0",
-	hour		=> "absent",
-	monthday	=> "absent",
-	month		=> "absent",
-	weekday		=> "absent",
-	special		=> "absent",
-}
+#cron { "weechat-ssl":
+#	ensure		=> "present",
+#	command		=> "$_ROOT/ssl/relay.sh",
+#	user		=> "root",
+#	minute		=> "0",
+#	hour		=> "absent",
+#	monthday	=> "absent",
+#	month		=> "absent",
+#	weekday		=> "absent",
+#	special		=> "absent",
+#}
 
 file { "weechat data folder":
 	path		=> "$_WEECHAT_DATA",
