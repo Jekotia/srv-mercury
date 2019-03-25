@@ -3,9 +3,9 @@
 #package { "python3-venv":  ensure	=> "installed" }
 
 class { 'python' :
-  version    => '3.5',
+#  version    => '3.6',
   pip        => 'present',
-  dev        => 'absent',
+  dev        => 'present',
   virtualenv => 'present',
   gunicorn   => 'absent',
 }
