@@ -50,3 +50,33 @@ file { "server logs folder":
 #    'Port'                   => [22, 2222],
 #  },
 #}
+
+class { 'unattended_upgrades':
+	age => {
+		'min' 			=> 10,
+		'max' 			=> 10
+	},
+	auto => {
+		'reboot'		=> false,
+		'fix_interrupted_dpkg'	=> true,
+		'remove'		=> true
+	},
+	enable 				=> 1,
+	install_on_shutdown		=> false,
+	legacy_origin			=> false,
+	mail => {
+		'to'			=> 'joshua.ameli@gmail.com'
+	},
+	minimal_steps			=> true,
+	origins => [
+		'http://mirrors.linode.com/debian stretch main',
+		'http://mirrors.linode.com/debian-security stretch/updates main',
+		'http://mirrors.linode.com/debian stretch-updates main'
+	],
+	package_ensure			=> installed,
+	update				=> 1,
+	upgrade				=> 1,
+	upgradeable_packages => {
+		'debdelta'		=> 1
+	},
+}

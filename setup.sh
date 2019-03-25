@@ -31,6 +31,9 @@ source ${_SCRIPT_INIT}
 	puppet module install puppetlabs-vcsrepo --version 2.4.0
 	puppet module install saz-timezone --version 5.0.2
 	puppet module install jethrocarr-hostname --version 1.0.3
+	puppet module install puppet-unattended_upgrades --version 3.2.1
+	puppet module install puppetlabs-apt --version 6.3.0
+	# ? puppet module install puppet-openvpn --version 7.4.0
 
 	puppet apply ${_PUPPET_ROOT}/manifests
 
