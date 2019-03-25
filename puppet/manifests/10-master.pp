@@ -16,7 +16,7 @@ class { 'timezone':
 cron { "ddns-update":
 	ensure		=> "present",
 	command		=> "$_SCRIPT_DDNS > /dev/null 2>&1",
-	user		=> "root",
+	user		=> "jekotia",
 	minute		=> "*/5",
 	hour		=> "absent",
 	monthday	=> "absent",
