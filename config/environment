@@ -73,3 +73,6 @@ env['_WEECHAT_USER']="weechat"
 env['_WEECHAT_GROUP']="${env['_WEECHAT_USER']}"
 env['_WEECHAT_UID']="2811"
 env['_WEECHAT_GID']="${env['_WEECHAT_UID']}"
+
+env['_MAILER_DATA']="${env['_DATA']}/mailer"
+
