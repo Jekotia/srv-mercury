@@ -1,2 +1,3 @@
 puppet/manifests/00-environment.pp
 config/ddns.conf
+.env
