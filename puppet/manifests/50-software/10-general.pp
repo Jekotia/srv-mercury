@@ -10,4 +10,6 @@ class { 'python' :
   gunicorn   => 'absent',
 }
 
-package { "git":          ensure	=> "installed" }
+package { "gawk":	ensure	=> "installed" }
+package { "git":	ensure	=> "installed" }
+package { "htop":	ensure	=> "installed" }
