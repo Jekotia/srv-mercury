@@ -2,7 +2,7 @@ version: '3.2'
 
 services:
   proxy:
-    image: "jekotia/caddy"
+    image: "jekotia/caddy:1.0.0"
     container_name: proxy
     restart: "always"
     command: "-log stdout -agree -email contact@jekotia.net"
