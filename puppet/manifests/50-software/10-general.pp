@@ -13,3 +13,4 @@ class { 'python' :
 package { "gawk":	ensure	=> "installed" }
 package { "git":	ensure	=> "installed" }
 package { "htop":	ensure	=> "installed" }
+package { "moreutils":	ensure	=> "installed" }
