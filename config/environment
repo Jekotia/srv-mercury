@@ -76,3 +76,9 @@ env['_WEECHAT_GID']="${env['_WEECHAT_UID']}"
 
 env['_MAILER_DATA']="${env['_DATA']}/mailer"
 
+env['_GRAFANA_DATA']="${env['_DATA']}/grafana"
+env['_GRAFANA_UID']="472"
+
+env['_TELEGRAF_DATA']="${env['_DATA']}/telegraf"
+
+env['_INFLUXDB_DATA']="${env['_DATA']}/influxdb"

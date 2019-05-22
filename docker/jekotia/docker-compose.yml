@@ -25,7 +25,7 @@ services:
   weechat:
     image: jekotia/weechat
     container_name: weechat
-    restart: unless-stopped
+    restart: always
     volumes:
     - ${_WEECHAT_DATA}:/data
     networks:
@@ -37,8 +37,63 @@ services:
       caddy_1.proxy: "/weechat weechat:9001"
       caddy_1.proxy.websocket: ""
 
+  grafana:
+    image: grafana/grafana:6.1.6
+    container_name: grafana
+    restart: always
+    user: "472"
+    environment:
+    - "GF_SERVER_ROOT_URL=https://mercury.jekotia.net/metrics"
+    - "GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}"
+    volumes:
+    - "${_GRAFANA_DATA}/storage:/var/lib/grafana"
+    networks:
+    - "proxy"
+    - "influxdb"
+    labels:
+      caddy.address: mercury.jekotia.net/metrics
+      caddy.targetport: "3000"
+      caddy.proxy._1: "transparent"
+
+  telegraf:
+    image: "telegraf:1.9.5"
+    container_name: "telegraf"
+    restart: always
+    environment:
+    - "HOST_PROC=/host/proc" #-> For monitoring host filesystem
+    volumes:
+     - "${_TELEGRAF_DATA}/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
+     - "/proc:/host/proc:ro" #-> For monitoring host filesystem
+     - "/var/run/docker.sock:/var/run/docker.sock" #-> For monitoring docker on host
+#    ports:
+#    - "8125:8125" #-> StatsD
+#    - "8092:8092" #-> UDP
+#    - "8094:8094" #-> TCP
+    depends_on:
+    - "influxdb"
+    networks:
+    - "influxdb"
+
+  influxdb:
+    image: "influxdb:1.7.6"
+    container_name: "influxdb"
+    restart: always
+    environment:
+    - "INFLUXDB_DB=telegraf"
+    - "INFLUXDB_USER=telegraf"
+    - "INFLUXDB_USER_PASSWORD=${TELEGRAF_DB_PASSWORD}"
+    volumes:
+    - "${_INFLUXDB_DATA}/db:/var/lib/influxdb"
+#    ports:
+#    - "8083:8083" #-> Administrator interface port, if it is enabled
+#    - "8086:8086" #-> HTTP API port
+#    - "2003:2003" #-> Graphite support, if it is enabled
+    networks:
+    - "influxdb"
+
 networks:
   proxy:
     external:
       name: core_proxy
   mailer:
+  influxdb:
