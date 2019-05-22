@@ -3,7 +3,7 @@ version: '3.2'
 services:
   proxy:
     image: "jekotia/caddy:1.0.0"
-    container_name: proxy
+    container_name: "proxy"
     restart: "always"
     command: "-log stdout -agree -email contact@jekotia.net"
     ports:
@@ -20,9 +20,9 @@ services:
     image: "portainer/portainer"
     container_name: "portainer"
     restart: "always"
-    command: -H unix:///var/run/docker.sock
+    command: "-H unix:///var/run/docker.sock"
     volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
+    - "/var/run/docker.sock:/var/run/docker.sock"
     - "${_PORTAINER_DATA}/portainer:/data"
     networks:
     - "proxy"
@@ -39,6 +39,7 @@ services:
   watchtower:
     image: "v2tec/watchtower"
     container_name: "watchtower"
+    restart: "always"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
 #      - "/root/.docker/config.json:/config.json"
