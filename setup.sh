@@ -2,51 +2,53 @@
 
 #-> KEY VARIABLES
 #-> PATH TO SRV-COMMON REPO
-cPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/../common"
+cPATH="/srv/common"
 
 #-> ENSURE GIT IS PRESENT
-if ! git --version  > /dev/null 2>&1 ; then
+if ! git --version > /dev/null 2>&1 ; then
 	yum install -y git
 fi
 
-#if ! dig --version  > /dev/null 2>&1 ; then
+#if ! dig --version > /dev/null 2>&1 ; then
 #	yum install -y dnsutils
 #fi
 
-git clone --single-branch --branch centos --recurse-submodules https://github.com/Jekotia/srv-common.git /srv/common
+git clone --single-branch --branch centos --recurse-submodules https://github.com/Jekotia/srv-common.git ${cPATH}
 
-#export _COMMON=/srv/common
-#echo "_COMMON=/srv/common" >> /etc/environment
-#export _ROOT=/srv/mercury
-#echo "_ROOT=/srv/mercury" >> /etc/environment
-
-
-#-# Source all functions
+#-> SOURCE FUNCTIONS
 source ${cPATH}/init
 
-#-# Setup the environment
-source /srv/common/bin/build-environment
+#-> ENSURE SUPERUSER BEFORE GOING ANY FURTHER
+isRoot "exit"
 
-#-# Initial Setup
-	#-# Puppet
+#-> SETUP ENVIRONMENT VARIABLES
+source ${cPATH}/bin/build-environment
 
-	#install_puppet
-	package_InstallFromFile "https://yum.puppet.com/puppet6-release-el-7.noarch.rpm"
-	package_install --unattended "puppet-agent"
+#-> INITIAL SETUP
+	#-# PUPPET
+		#-> INSTALL THE CENTOS REPO RPM
+		package_InstallFromURL "https://yum.puppet.com/puppet6-release-el-7.noarch.rpm"
+		#-> INSTALL THE AGENT FROM THE REPO ADDED ABOVE
+		package_install --unattended --verbose "puppet-agent"
 
-	puppet module install puppetlabs-stdlib --version 4.25.1
-	puppet module install puppetlabs-docker --version 3.1.0
-	puppet module install saz-sudo --version 5.0.0
-	puppet module install saz-ssh --version 4.0.0
-	puppet module install puppet-python --version 2.2.2
-	puppet module install puppetlabs-vcsrepo --version 2.4.0
-	puppet module install saz-timezone --version 5.0.2
-	puppet module install jethrocarr-hostname --version 1.0.3
-	puppet module install puppet-unattended_upgrades --version 3.2.1
-	puppet module install puppetlabs-apt --version 6.3.0
-	# ? puppet module install puppet-openvpn --version 7.4.0
+		#-> PUPPET INSTALLS TO A NON-STANDARD LOCATION FOR BINARIES; LETS CREATE A SYMLINK TO /USR/BIN
+		ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
-	puppet apply ${_PUPPET_ROOT}/manifests
+		#-> PUPPET MODULES REQUIRED BY THE PUPPETFILES IN THIS REPO
+		puppet module install puppetlabs-stdlib --version 4.25.1
+		puppet module install puppetlabs-docker --version 3.1.0
+		puppet module install saz-sudo --version 5.0.0
+		puppet module install saz-ssh --version 4.0.0
+		puppet module install puppet-python --version 2.2.2
+		puppet module install puppetlabs-vcsrepo --version 2.4.0
+		puppet module install saz-timezone --version 5.0.2
+		puppet module install jethrocarr-hostname --version 1.0.3
+		puppet module install puppet-unattended_upgrades --version 3.2.1
+		puppet module install puppetlabs-apt --version 6.3.0
+		# ? puppet module install puppet-openvpn --version 7.4.0
+
+		#-> APPLY THE PUPPET MANIFESTS FROM THIS REPO
+		puppet apply ${_PUPPET_ROOT}/manifests
 
 	#-# User Setup
 	#user_add_sudo "${new_user_name}" "${new_user_pass}"
