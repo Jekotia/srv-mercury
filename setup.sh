@@ -15,11 +15,12 @@ git clone --single-branch --branch centos --recurse-submodules https://github.co
 #echo "_ROOT=/srv/mercury" >> /etc/environment
 
 #-# Setup the environment
-source /srv/common/bin/build-environment
 
 #-# Source all functions
 FUNC=/srv/common/functions/
 source ${FUNC}init
+
+source /srv/common/bin/build-environment
 
 #-# Initial Setup
 	#-# Puppet
