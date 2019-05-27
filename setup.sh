@@ -7,7 +7,7 @@ fi
 #	yum install -y dnsutils
 #fi
 
-git clone --recurse-submodules https://github.com/Jekotia/srv-common.git /srv/common
+git clone --single-branch --branch centos --recurse-submodules https://github.com/Jekotia/srv-common.git /srv/common
 
 #export _COMMON=/srv/common
 #echo "_COMMON=/srv/common" >> /etc/environment
