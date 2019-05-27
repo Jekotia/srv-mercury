@@ -1,4 +1,10 @@
 #! /bin/bash
+
+#-> KEY VARIABLES
+#-> PATH TO SRV-COMMON REPO
+cPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/../common"
+
+#-> ENSURE GIT IS PRESENT
 if ! git --version  > /dev/null 2>&1 ; then
 	yum install -y git
 fi
@@ -14,12 +20,11 @@ git clone --single-branch --branch centos --recurse-submodules https://github.co
 #export _ROOT=/srv/mercury
 #echo "_ROOT=/srv/mercury" >> /etc/environment
 
-#-# Setup the environment
 
 #-# Source all functions
-FUNC=/srv/common/functions/
-source ${FUNC}init
+source ${cPATH}/init
 
+#-# Setup the environment
 source /srv/common/bin/build-environment
 
 #-# Initial Setup
@@ -28,7 +33,7 @@ source /srv/common/bin/build-environment
 	#install_puppet
 	package_InstallFromFile "https://yum.puppet.com/puppet6-release-el-7.noarch.rpm"
 	package_install --unattended "puppet-agent"
-exit
+
 	puppet module install puppetlabs-stdlib --version 4.25.1
 	puppet module install puppetlabs-docker --version 3.1.0
 	puppet module install saz-sudo --version 5.0.0
