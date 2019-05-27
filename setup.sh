@@ -18,7 +18,8 @@ git clone --single-branch --branch centos --recurse-submodules https://github.co
 source /srv/common/bin/build-environment
 
 #-# Source all functions
-source ${_SCRIPT_INIT}
+FUNC=/srv/common/functions/
+source ${FUNC}init
 
 #-# Initial Setup
 	#-# Puppet
