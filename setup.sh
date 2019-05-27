@@ -1,13 +1,13 @@
 #! /bin/bash
 if ! git --version  > /dev/null 2>&1 ; then
-	apt install -y git
+	yum install -y git
 fi
 
-if ! dig --version  > /dev/null 2>&1 ; then
-	apt install -y dnsutils
-fi
+#if ! dig --version  > /dev/null 2>&1 ; then
+#	yum install -y dnsutils
+#fi
 
-git clone https://github.com/Jekotia/srv-common.git /srv/common
+git clone --recurse-submodules https://github.com/Jekotia/srv-common.git /srv/common
 
 #export _COMMON=/srv/common
 #echo "_COMMON=/srv/common" >> /etc/environment
@@ -22,7 +22,11 @@ source ${_SCRIPT_INIT}
 
 #-# Initial Setup
 	#-# Puppet
-	install_puppet
+
+	#install_puppet
+	package_InstallFromFile "https://yum.puppet.com/puppet6-release-el-7.noarch.rpm"
+	package_install --unattended "puppet-agent"
+exit
 	puppet module install puppetlabs-stdlib --version 4.25.1
 	puppet module install puppetlabs-docker --version 3.1.0
 	puppet module install saz-sudo --version 5.0.0
