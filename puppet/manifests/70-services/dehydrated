@@ -13,6 +13,7 @@ group { "$_DEHYDRATED_GROUP":
 
 cron { "dehydrated-ssl":
 	ensure		=> "present",
+	environment	=> "MAILTO=alerts@jekotia.net",
 	command		=> "$_ROOT/ssl/run.sh -c",
 	user		=> "root",
 	minute		=> "0",

@@ -1,5 +1,6 @@
 cron { "disk-monitor":
 	ensure		=> "present",
+	environment	=> "MAILTO=alerts@jekotia.net",
 	command		=> "/srv/common/scripts/monitoring/disk.sh",
 	user		=> "root",
 	minute		=> "*/30",

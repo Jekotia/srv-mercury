@@ -13,6 +13,7 @@ group { "$_WEECHAT_GROUP":
 
 #cron { "weechat-ssl":
 #	ensure		=> "present",
+#	environment	=> "MAILTO=alerts@jekotia.net",
 #	command		=> "$_ROOT/ssl/relay.sh",
 #	user		=> "root",
 #	minute		=> "0",

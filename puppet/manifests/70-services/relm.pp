@@ -41,6 +41,7 @@ python::virtualenv { "/srv/virtualenv/relm" :
 
 cron { "relm":
 	ensure		=> "present",
+	environment	=> "MAILTO=alerts@jekotia.net",
 	command		=> "cd $_RELM && /srv/virtualenv/relm/bin/python3.5 $_RELM/relm.py github --user=jekotia > /dev/null 2>&1",
 	user		=> "jekotia",
 	minute		=> "*/30",

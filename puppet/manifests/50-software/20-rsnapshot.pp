@@ -1,5 +1,6 @@
 cron { "rsnapshot hourly":
 	ensure		=> "present",
+	environment	=> "MAILTO=alerts@jekotia.net",
 	command		=> "rsnapshot hourly",
 	user		=> "root",
 	minute		=> "0",
@@ -12,6 +13,7 @@ cron { "rsnapshot hourly":
 
 cron { "rsnapshot daily":
 	ensure		=> "present",
+	environment	=> "MAILTO=alerts@jekotia.net",
 	command		=> "rsnapshot daily",
 	user		=> "root",
 	minute		=> "0",
@@ -24,6 +26,7 @@ cron { "rsnapshot daily":
 
 cron { "rsnapshot weekly":
 	ensure		=> "present",
+	environment	=> "MAILTO=alerts@jekotia.net",
 	command		=> "rsnapshot weekly",
 	user		=> "root",
 	minute		=> "0",
@@ -36,6 +39,7 @@ cron { "rsnapshot weekly":
 
 cron { "rsnapshot monthly":
 	ensure		=> "present",
+	environment	=> "MAILTO=alerts@jekotia.net",
 	command		=> "rsnapshot monthly",
 	user		=> "root",
 	minute		=> "0",

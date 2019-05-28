@@ -15,6 +15,7 @@ class { 'timezone':
 
 cron { "ddns-update":
 	ensure		=> "present",
+	environment	=> "MAILTO=alerts@jekotia.net",
 	command		=> "$_SCRIPT_DDNS > /dev/null 2>&1",
 	user		=> "jekotia",
 	minute		=> "*/5",
