@@ -57,6 +57,8 @@ services:
     networks:
     - proxy
     - ttrss
+    depends_on:
+    - ttrss.database
     labels:
       caddy.address: ttrss.jekotia.net
       caddy.targetport: "80"
