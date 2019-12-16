@@ -15,3 +15,9 @@ package { "git":	ensure	=> "installed" }
 package { "htop":	ensure	=> "installed" }
 package { "iftop":	ensure	=> "installed" }
 package { "moreutils":	ensure	=> "installed" }
+
+ensure_packages(['mdv'], {
+    ensure   => present,
+    provider => 'pip',
+})
+
