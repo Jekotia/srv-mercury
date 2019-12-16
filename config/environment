@@ -68,6 +68,18 @@ env['_PROXY_GROUP']="${env['_PROXY_USER']}"
 env['_PROXY_UID']="2665"
 env['_PROXY_GID']="${env['_PROXY_UID']}"
 
+#env['_TTRSS_DATA']="${env['_DATA']}/ttrss"
+#env['_TTRSS_USER']="ttrss"
+#env['_TTRSS_GROUP']="${env['_TTRSS_USER']}"
+#env['_TTRSS_UID']="2776"
+#env['_TTRSS_GID']="${env['_TTRSS_UID']}"
+
+env['_TTRSS_DATABASE_DATA']="${env['_DATA']}/ttrss-database"
+#env['_TTRSS_DATABASE_USER']="ttrss"
+#env['_TTRSS_DATABASE_GROUP']="${env['_TTRSS_DATABASE_USER']}"
+#env['_TTRSS_DATABASE_UID']="2771"
+#env['_TTRSS_DATABASE_GID']="${env['_TTRSS_DATABASE_UID']}"
+
 env['_WEECHAT_DATA']="${env['_DATA']}/weechat"
 env['_WEECHAT_USER']="weechat"
 env['_WEECHAT_GROUP']="${env['_WEECHAT_USER']}"
@@ -82,3 +94,5 @@ env['_GRAFANA_UID']="472"
 env['_TELEGRAF_DATA']="${env['_DATA']}/telegraf"
 
 env['_INFLUXDB_DATA']="${env['_DATA']}/influxdb"
+
+env['_CHRONOGRAF_DATA']="${env['_DATA']}/chronograf"
