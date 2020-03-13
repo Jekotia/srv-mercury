@@ -1,4 +1,6 @@
 puppet/manifests/00-environment.pp
 config/ddns.conf
 config/monitoring.conf
+
 .env
+secrets.conf

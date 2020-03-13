@@ -13,10 +13,10 @@ class { 'timezone':
     timezone => 'America/Toronto',
 }
 
-cron { "ddns-update":
+cron { "cfdns-update":
 	ensure		=> "present",
 	environment	=> "MAILTO=alerts@jekotia.net",
-	command		=> "$_SCRIPT_DDNS > /dev/null 2>&1",
+	command		=> "$_SCRIPT_CFDNS > /dev/null 2>&1",
 	user		=> "jekotia",
 	minute		=> "*/5",
 	hour		=> "absent",
@@ -66,7 +66,7 @@ class { 'unattended_upgrades':
 	install_on_shutdown		=> false,
 	legacy_origin			=> false,
 	mail => {
-		'to'			=> 'joshua.ameli@gmail.com'
+		'to'			=> 'alerts@jekotia.net'
 	},
 	minimal_steps			=> true,
 	origins => [
