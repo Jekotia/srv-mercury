@@ -1,0 +1,56 @@
+version: "3.3"
+services:
+  wallabag:
+    image: wallabag/wallabag
+    container_name: wallabag
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${WALLABAG_MYSQL_ROOT_PASS}
+      - SYMFONY__ENV__DATABASE_DRIVER=pdo_mysql
+      - SYMFONY__ENV__DATABASE_HOST=wallabag.db
+      - SYMFONY__ENV__DATABASE_PORT=3306
+      - SYMFONY__ENV__DATABASE_NAME=${WALLABAG_MYSQL_DB_NAME}
+      - SYMFONY__ENV__DATABASE_USER=${WALLABAG_MYSQL_USER_NAME}
+      - SYMFONY__ENV__DATABASE_PASSWORD=${WALLABAG_MYSQL_USER_PASS}
+      - SYMFONY__ENV__DATABASE_CHARSET=utf8mb4
+      - SYMFONY__ENV__MAILER_HOST=mailer
+      - SYMFONY__ENV__MAILER_USER=${SMTP_USER}
+      - SYMFONY__ENV__MAILER_PASSWORD=${SMTP_PASS}
+      - SYMFONY__ENV__FROM_EMAIL=${SMTP_USER}
+      - SYMFONY__ENV__DOMAIN_NAME=https://wallabag.jekotia.net/
+    volumes:
+      - ${_WALLABAG_DATA}/images:/var/www/wallabag/web/assets/images
+    networks:
+      - proxy
+      - wallabag
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wallabag.rule=Host(`wallabag.jekotia.net`)"
+      - "traefik.http.routers.wallabag.entrypoints=websecure"
+      - "traefik.http.routers.wallabag.tls.certresolver=myresolver"
+
+  wallabag.db:
+    image: mariadb
+    container_name: wallabag.db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${WALLABAG_MYSQL_ROOT_PASS}
+    volumes:
+      - ${_WALLABAG_DATA}/data:/var/lib/mysql
+    networks:
+      - proxy
+      - wallabag
+
+  wallabag.redis:
+    container_name: wallabag.redis
+    restart: always
+    image: redis:alpine
+
+networks:
+  proxy:
+    external:
+      name: core_proxy
+  mailer:
+    external:
+      name: jekotia_mailer
+  wallabag:

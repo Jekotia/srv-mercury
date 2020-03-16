@@ -1,0 +1,8 @@
+version: "3.3"
+services:
+  discord-irc:
+    image: jekotia/discord-irc
+    container_name: discord-irc
+    restart: unless-stopped
+    volumes:
+    - ${_DISCORDIRC_DATA}:/data

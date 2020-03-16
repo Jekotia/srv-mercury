@@ -1,0 +1,77 @@
+version: "3.3"
+services:
+  # https://github.com/HenryQW/Awesome-TTRSS/blob/master/docker-compose.yml
+  ##database.postgres:
+  ttrss.database:
+    image: postgres:alpine
+    ##container_name: postgres
+    container_name: ttrss.database
+    environment:
+      - POSTGRES_PASSWORD=${TTRSS_POSTGRES_PASS}
+    volumes:
+      - ${_TTRSS_DATABASE_DATA}:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - ttrss
+
+  ##service.rss:
+  ttrss:
+    image: wangqiru/ttrss:latest
+    container_name: ttrss
+    #ports:
+    #- 181:80
+    environment:
+      - SELF_URL_PATH=https://ttrss.jekotia.net/
+      ##- DB_HOST=database.postgres
+      - DB_HOST=ttrss.database
+      - DB_PORT=5432
+      - DB_NAME=ttrss
+      - DB_USER=postgres
+      - DB_PASS=${TTRSS_POSTGRES_PASS} # please change the password
+      - ENABLE_PLUGINS=auth_internal,fever # auth_internal is required. Plugins enabled here will be enabled for all users as system plugins
+    stdin_open: true
+    tty: true
+    restart: always
+    command: sh -c 'sh /wait-for.sh $$DB_HOST:$$DB_PORT -- php /configure-db.php && exec s6-svscan /etc/s6/'
+    #ports:
+    #  - 80
+    networks:
+      - proxy
+      - ttrss
+    depends_on:
+      - ttrss.database
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ttrss.rule=Host(`ttrss.jekotia.net`)"
+      - "traefik.http.routers.ttrss.entrypoints=websecure"
+      - "traefik.http.routers.ttrss.tls.certresolver=myresolver"
+
+#-#  ##service.mercury: # set Mercury Parser API endpoint to `service.mercury:3000` on TTRSS plugin setting page
+#-#  ttrss.mercury: # set Mercury Parser API endpoint to `ttrss.mercury:3000` on TTRSS plugin setting page
+#-#    image: wangqiru/mercury-parser-api:latest
+#-#    ##container_name: mercury
+#-#    container_name: ttrss.mercury
+#-#    expose:
+#-#      - 3000
+#-#    restart: always
+#-#    networks:
+#-#    - ttrss
+
+###  ##service.opencc: # set OpenCC API endpoint to `service.opencc:3000` on TTRSS plugin setting page
+###  ttrss.opencc: # set OpenCC API endpoint to `ttrss.opencc:3000` on TTRSS plugin setting page
+###    image: wangqiru/opencc-api-server:latest
+###    ##container_name: opencc
+###    container_name: ttrss.opencc
+###    environment:
+###      - NODE_ENV=production
+###    expose:
+###      - 3000
+###    restart: always
+###    networks:
+###    - ttrss
+
+networks:
+  proxy:
+    external:
+      name: core_proxy
+  ttrss:
