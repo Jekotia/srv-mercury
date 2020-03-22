@@ -1,3 +1,4 @@
+#-> https://doc.wallabag.org/en/admin/console_commands.html
 version: "3.3"
 services:
   wallabag:
