@@ -48,10 +48,4 @@ services:
     image: redis:alpine
 
 networks:
-  proxy:
-    external:
-      name: core_proxy
-  mailer:
-    external:
-      name: jekotia_mailer
   wallabag:

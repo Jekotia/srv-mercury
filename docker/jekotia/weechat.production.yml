@@ -15,8 +15,3 @@ services:
       - "traefik.tcp.routers.weechat.rule=HostSNI(`weechat.jekotia.net`)"
       - "traefik.tcp.routers.weechat.tls=true"
       - "traefik.tcp.services.weechat.loadbalancer.server.port=9001"
-
-networks:
-  proxy:
-    external:
-      name: core_proxy

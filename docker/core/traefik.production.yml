@@ -4,6 +4,7 @@ services:
   traefik:
     image: "traefik:v2.1"
     container_name: "traefik"
+    restart: "always"
     command:
       #- "--log.level=DEBUG"
       - "--api.dashboard=true"
@@ -48,37 +49,3 @@ services:
       - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.redirs.entrypoints=web"
       - "traefik.http.routers.redirs.middlewares=redirect-to-https"
-
-  portainer:
-    image: "portainer/portainer"
-    container_name: "portainer"
-    restart: "always"
-    command: "-H unix:///var/run/docker.sock"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "${_PORTAINER_DATA}/portainer:/data"
-    networks:
-      - "proxy"
-    labels:
-      # - "com.centurylinklabs.watchtower.enable=false"
-      - "traefik.enable=true"
-      - "traefik.http.routers.portainer.rule=Host(`docker.jekotia.net`)" # && PathPrefix(`/docker`)"
-      - "traefik.http.routers.portainer.entrypoints=websecure"
-      - "traefik.http.routers.portainer.tls.certresolver=myresolver"
-      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
-
-#      - "traefik.tcp.routers.portainer.rule=HostSNI(`docker.jekotia.net`) && PathPrefix(`/api/websocket/`)"
-#      - "traefik.tcp.routers.portainer.tls=true"
-#      - "traefik.tcp.services.portainer.loadbalancer.server.port=9000"
-
-#   watchtower:
-#     image: "v2tec/watchtower"
-#     container_name: "watchtower"
-#     restart: "always"
-#     volumes:
-#       - "/var/run/docker.sock:/var/run/docker.sock"
-# #      - "/root/.docker/config.json:/config.json"
-# #    command: --interval 30
-
-networks:
-  proxy:

@@ -1,16 +1,14 @@
 version: "3.3"
 services:
   # https://github.com/HenryQW/Awesome-TTRSS/blob/master/docker-compose.yml
-  ##database.postgres:
   ttrss.database:
     image: postgres:alpine
-    ##container_name: postgres
     container_name: ttrss.database
+    restart: always
     environment:
       - POSTGRES_PASSWORD=${TTRSS_POSTGRES_PASS}
     volumes:
       - ${_TTRSS_DATABASE_DATA}:/var/lib/postgresql/data
-    restart: always
     networks:
       - ttrss
 
@@ -71,7 +69,4 @@ services:
 ###    - ttrss
 
 networks:
-  proxy:
-    external:
-      name: core_proxy
   ttrss:
