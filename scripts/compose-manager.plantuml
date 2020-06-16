@@ -1,0 +1,27 @@
+@startuml compose-manager
+title compose-manager
+scale 2
+start
+
+partition LOOP_OVER_STATIC_ENV_FILES {
+	while (for file in ENV_PARTS)
+		if (if file exists)
+			:Merge env file;
+		endif
+	endwhile
+}
+
+partition LOOP_OVER_COMPOSE_FILES {
+	':list *.production.yml files;'
+	while (for file in `find` results)
+		:add '-f $file' to COMPOSE_STRING;
+		if (if counterpart env file exists)
+			:Merge env file;
+		endif
+	endwhile
+}
+
+#red:docker-compose $COMPOSE_STRING > ./docker-compose.yml;
+
+stop
+@enduml

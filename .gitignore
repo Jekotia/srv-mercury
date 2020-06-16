@@ -1,4 +1,5 @@
-docker/bak/
+BACKUP/
+bak/
 
 config/ddns.conf
 config/monitoring.conf
@@ -11,3 +12,10 @@ puppet/manifests/00-environment.pp
 secrets.conf
 05-secrets.pp
 *.code-workspace
+
+docker/*/docker-compose.yml
+docker/*/env-parts/*.env
+!docker/*/env-parts/*.example.env
+docker/*/compose-parts/*.yml
+!docker/*/compose-parts/*.prod.yml
+!docker/*/compose-parts/*.production.yml

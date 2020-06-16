@@ -25,8 +25,8 @@ services:
     networks:
       - "proxy"
     environment:
-      - CLOUDFLARE_EMAIL=$TRAEFIK_CLOUDFLARE_EMAIL
-      - CLOUDFLARE_API_KEY=$TRAEFIK_CLOUDFLARE_API_KEY
+      - CLOUDFLARE_EMAIL=$SECRETS_TRAEFIK_CLOUDFLARE_EMAIL
+      - CLOUDFLARE_API_KEY=$SECRETS_TRAEFIK_CLOUDFLARE_API_KEY
     volumes:
       - "${_TRAEFIK_DATA}:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -38,7 +38,7 @@ services:
       - "traefik.http.routers.api.tls.certresolver=myresolver"
       #-> Extras for dashboard auth
       - "traefik.http.routers.api.service=api@internal"
-      - "traefik.http.middlewares.auth.digestauth.users=${TRAEFIK_USER}:${TRAEFIK_REALM}:${TRAEFIK_PASS}"
+      - "traefik.http.middlewares.auth.digestauth.users=${SECRETS_TRAEFIK_USER}:${SECRETS_TRAEFIK_REALM}:${SECRETS_TRAEFIK_PASS}"
       - "traefik.http.routers.api.middlewares=auth"
 
       #-> Redirect HTTP to HTTPS

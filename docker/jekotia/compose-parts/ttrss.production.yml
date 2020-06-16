@@ -6,7 +6,7 @@ services:
     container_name: ttrss.database
     restart: always
     environment:
-      - POSTGRES_PASSWORD=${TTRSS_POSTGRES_PASS}
+      - POSTGRES_PASSWORD=${SECRETS_TTRSS_POSTGRES_PASS}
     volumes:
       - ${_TTRSS_DATABASE_DATA}:/var/lib/postgresql/data
     networks:
@@ -25,7 +25,7 @@ services:
       - DB_PORT=5432
       - DB_NAME=ttrss
       - DB_USER=postgres
-      - DB_PASS=${TTRSS_POSTGRES_PASS} # please change the password
+      - DB_PASS=${SECRETS_TTRSS_POSTGRES_PASS} # please change the password
       - ENABLE_PLUGINS=auth_internal,fever # auth_internal is required. Plugins enabled here will be enabled for all users as system plugins
     stdin_open: true
     tty: true

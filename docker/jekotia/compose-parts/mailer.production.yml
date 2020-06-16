@@ -5,10 +5,10 @@ services:
     image: "tecnativa/postfix-relay"
     restart: "always"
     environment:
-    - "MAIL_RELAY_HOST=${SMTP_HOST}"
-    - "MAIL_RELAY_PORT=${SMTP_PORT}"
-    - "MAIL_RELAY_USER=${SMTP_USER}"
-    - "MAIL_RELAY_PASS=${SMTP_PASS}"
+    - "MAIL_RELAY_HOST=${SECRETS_SMTP_HOST}"
+    - "MAIL_RELAY_PORT=${SECRETS_SMTP_PORT}"
+    - "MAIL_RELAY_USER=${SECRETS_SMTP_USER}"
+    - "MAIL_RELAY_PASS=${SECRETS_SMTP_PASS}"
     volumes:
     - ${_MAILER_DATA}/queue:/var/spool/postfix
     networks:
