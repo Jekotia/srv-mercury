@@ -39,7 +39,6 @@ services:
     volumes:
       - ${_WALLABAG_DATA}/data:/var/lib/mysql
     networks:
-      - proxy
       - wallabag
 
   wallabag.redis:
