@@ -15,6 +15,16 @@ sudo::conf { "jekotia":
 	content		=> "jekotia ALL=(ALL) NOPASSWD: ALL",
 }
 
+#/srv/home/jekotia /home/jekotia auto  defaults,nofail,nobootwait,bind 0 2
+mount { '/home/jekotia':
+	ensure  => mounted,
+	device  => '/srv/home/jekotia',
+	fstype  => 'none',
+	options => 'defaults,nofail,nobootwait,bind',
+	#options => 'rw,bind',
+	#pass        => # The pass in which the mount is...
+}
+
 ssh_authorized_key { "jameli@jupiter":
 	ensure	=> present,
 	user	=> "jekotia",
