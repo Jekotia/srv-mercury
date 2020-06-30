@@ -31,6 +31,15 @@ done
 			esac
 		fi
 	}
+	function newline_at_eof() {
+		if [ -z "$(tail -c 1 "$1")" ] ; then
+			debug "Newline at end of file!"
+			return 0
+		else
+			debug "No newline at end of file!"
+			return 1
+		fi
+	}
 	function merge_fail() {
 		file_in="$1" ; debug -v "file_in"
 		file_out="$2" ; debug -v "file_out"
@@ -44,10 +53,8 @@ done
 
 		debug "Merging '${file_in_short}' into '${file_out_short}'"
 
-		file_out_tail="$(tail -n 1 "$file_out")"
-
 		# Append empty line if the last line of the file isn't empty
-		if [[ ! "${file_out_tail}" == "" ]] ; then
+		if ! newline_at_eof "${file_out}" ; then
 			debug "Appending empty line"
 			echo "" >> "${file_out}" \
 			|| { merge_fail "${file_in_short}" "${file_out_short}" ; return 1; }
@@ -58,12 +65,12 @@ done
 		echo "# BEGIN -> ${file_in_short}" >> "${file_out}" \
 		|| { merge_fail "${file_in_short}" "${file_out_short}" ; return 1; }
 		
-		sed -e 's/^[# ]*\(.*=.*\)$/\1=/g' "${file_in}" \
+		sed -e 's/^[# ]*\(.*=.*\)$/\1/g' "${file_in}" \
 				>> "${file_out}" \
 		|| { merge_fail "${file_in_short}" "${file_out_short}" ; return 1; }
 
-		if [[ ! "${file_out_tail}" == "" ]] ; then
-			debug "Appending empty line"
+		if ! newline_at_eof "${file_out}" ; then
+			echo "Appending empty line"
 			echo "" >> "${file_out}" \
 			|| { merge_fail "${file_in_short}" "${file_out_short}" ; return 1; }
 		fi
@@ -200,7 +207,9 @@ done
 		debug -v env_file
 		if [ -e "${env_file}" ] ; then
 			debug "env_file exists"
-			echo "Using ENV file '$(get_relative_path "${env_file}")'"
+			env_file_short="$(get_relative_path "${env_file}")"
+			env_file_short="${env_file_short//env-parts\//}"
+			echo "Using ENV     file ${env_file_short}"
 			file_merge "$env_file" "${ENV_OUTPUT_TEMP}" || exit 1
 		fi
 	done
@@ -213,7 +222,9 @@ done
 			debug -v "compose_file"
 			COMPOSE_PARTS+=("$compose_file")
 			COMPOSE_STRING+=("-f $compose_file")
-			echo "Using COMPOSE file '$(get_relative_path "${compose_file}")'"
+			compose_file_short="$(get_relative_path "${compose_file}")"
+			compose_file_short="${compose_file_short//compose-parts\//}"
+			echo "Using COMPOSE file ${compose_file_short}"
 		#<< COMPOSE
 		#>> ENV
 			#TODO: Merge sed commands into single instance
@@ -222,7 +233,9 @@ done
 			if [ -e "$env_file" ] ; then
 				#TODO: Ditch separate env file, pass the component files as args to docker-compose
 				#ENV_STRING+=("--env-file=${env_file}")
-				echo "Using ENV file '$(get_relative_path "${env_file}")'"
+				env_file_short="$(get_relative_path "${env_file}")"
+				env_file_short="${env_file_short//env-parts\//}"
+				echo "Using ENV     file ${env_file_short}"
 				file_merge "$env_file" "${ENV_OUTPUT_TEMP}" || exit 1
 			fi
 		#<< ENV
@@ -244,7 +257,7 @@ source /etc/environment
 if docker-compose ${COMPOSE_STRING[@]} config > "${COMPOSE_OUTPUT_TEMP}" ; then 
 	if mv "${COMPOSE_OUTPUT_TEMP}" "${COMPOSE_OUTPUT_FILE}" ; then
 		debug "Moved '${COMPOSE_OUTPUT_TEMP}' to '${COMPOSE_OUTPUT_FILE}'"
-		echo "docker-compose data have been compiled in '${COMPOSE_OUTPUT_FILE}'"
+		echo "docker-compose data has been compiled in '${COMPOSE_OUTPUT_FILE}'"
 	else
 		echo "ERROR: Unable to move '${COMPOSE_OUTPUT_TEMP}' to '${COMPOSE_OUTPUT_FILE}'"
 		exit 1
