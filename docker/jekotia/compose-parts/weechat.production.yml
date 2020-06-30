@@ -1,8 +1,8 @@
 version: "3.3"
 services:
-  weechat:
+  weechat.app:
     image: jekotia/weechat
-    container_name: weechat
+    container_name: weechat.app
     restart: "always"
     volumes:
       - ${_WEECHAT_DATA}:/data

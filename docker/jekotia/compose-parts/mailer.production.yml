@@ -1,14 +1,14 @@
 version: "3.3"
 services:
-  mailer:
-    container_name: "mailer"
+  mailer.app:
+    container_name: "mailer.app"
     image: "tecnativa/postfix-relay"
     restart: "always"
     environment:
-    - "MAIL_RELAY_HOST=${SECRETS_SMTP_HOST}"
-    - "MAIL_RELAY_PORT=${SECRETS_SMTP_PORT}"
-    - "MAIL_RELAY_USER=${SECRETS_SMTP_USER}"
-    - "MAIL_RELAY_PASS=${SECRETS_SMTP_PASS}"
+    - MAIL_RELAY_HOST=${SECRETS_SMTP_HOST}
+    - MAIL_RELAY_PORT=${SECRETS_SMTP_PORT}
+    - MAIL_RELAY_USER=${SECRETS_SMTP_USER}
+    - MAIL_RELAY_PASS=${SECRETS_SMTP_PASS}
     volumes:
     - ${_MAILER_DATA}/queue:/var/spool/postfix
     networks:

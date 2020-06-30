@@ -1,9 +1,9 @@
 #-> https://doc.wallabag.org/en/admin/console_commands.html
 version: "3.3"
 services:
-  wallabag:
+  wallabag.app:
     image: wallabag/wallabag
-    container_name: wallabag
+    container_name: wallabag.app
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${SECRETS_WALLABAG_MYSQL_ROOT_PASS}

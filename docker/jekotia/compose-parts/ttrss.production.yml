@@ -13,9 +13,9 @@ services:
       - ttrss
 
   ##service.rss:
-  ttrss:
+  ttrss.app:
     image: wangqiru/ttrss:latest
-    container_name: ttrss
+    container_name: ttrss.app
     #ports:
     #- 181:80
     environment:
