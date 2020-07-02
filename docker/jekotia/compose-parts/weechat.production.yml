@@ -5,7 +5,7 @@ services:
     container_name: weechat.app
     restart: "always"
     volumes:
-      - ${_WEECHAT_DATA}:/data
+      - weechat.data.main:/data
     networks:
       - proxy
     stdin_open: true
@@ -17,3 +17,11 @@ services:
       - "traefik.tcp.routers.weechat.tls=true"
       - "traefik.tcp.routers.weechat.tls.certresolver=myresolver"
       - "traefik.tcp.services.weechat.loadbalancer.server.port=9001"
+
+volumes:
+  weechat.data.main:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${_WEECHAT_DATA}
+      o: bind

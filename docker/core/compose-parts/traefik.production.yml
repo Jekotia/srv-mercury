@@ -28,7 +28,7 @@ services:
       - CLOUDFLARE_EMAIL=$SECRETS_TRAEFIK_CLOUDFLARE_EMAIL
       - CLOUDFLARE_API_KEY=$SECRETS_TRAEFIK_CLOUDFLARE_API_KEY
     volumes:
-      - "${_TRAEFIK_DATA}:/letsencrypt"
+      - traefik.data.main:/letsencrypt
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     labels:
       #-> Enable the Traefik dashboard
@@ -49,3 +49,12 @@ services:
       - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.redirs.entrypoints=web"
       - "traefik.http.routers.redirs.middlewares=redirect-to-https"
+
+volumes:
+  #"${_TRAEFIK_DATA}:/letsencrypt"
+  traefik.data.main:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${_TRAEFIK_DATA}
+      o: bind

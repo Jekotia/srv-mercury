@@ -10,9 +10,18 @@ services:
     - MAIL_RELAY_USER=${SECRETS_SMTP_USER}
     - MAIL_RELAY_PASS=${SECRETS_SMTP_PASS}
     volumes:
-    - ${_MAILER_DATA}/queue:/var/spool/postfix
+    - mailer.data.queue:/var/spool/postfix
     networks:
       mailer:
+
+volumes:
+  #${_MAILER_DATA}/queue:/var/spool/postfix
+  mailer.data.queue:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${_MAILER_DATA}/queue
+      o: bind
 
 networks:
   mailer:

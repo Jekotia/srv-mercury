@@ -1,14 +1,14 @@
 version: "3.3"
 services:
   # https://github.com/HenryQW/Awesome-TTRSS/blob/master/docker-compose.yml
-  ttrss.database:
+  ttrss.db:
     image: postgres:alpine
-    container_name: ttrss.database
+    container_name: ttrss.db
     restart: always
     environment:
       - POSTGRES_PASSWORD=${SECRETS_TTRSS_POSTGRES_PASS}
     volumes:
-      - ${_TTRSS_DATABASE_DATA}:/var/lib/postgresql/data
+      - ttrss.data.db:/var/lib/postgresql/data
     networks:
       - ttrss
 
@@ -21,7 +21,7 @@ services:
     environment:
       - SELF_URL_PATH=https://ttrss.jekotia.net/
       ##- DB_HOST=database.postgres
-      - DB_HOST=ttrss.database
+      - DB_HOST=ttrss.db
       - DB_PORT=5432
       - DB_NAME=ttrss
       - DB_USER=postgres
@@ -37,7 +37,7 @@ services:
       - proxy
       - ttrss
     depends_on:
-      - ttrss.database
+      - ttrss.db
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.ttrss.rule=Host(`ttrss.jekotia.net`)"
@@ -67,6 +67,14 @@ services:
 ###    restart: always
 ###    networks:
 ###    - ttrss
+
+volumes:
+  ttrss.data.db:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${_TTRSS_DATABASE_DATA}
+      o: bind
 
 networks:
   ttrss:

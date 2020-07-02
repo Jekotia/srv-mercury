@@ -7,10 +7,11 @@ services:
     restart: "always"
     command: "-H unix:///var/run/docker.sock"
     volumes:
+      - portainer.data.main:/data
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "${_PORTAINER_DATA}/portainer:/data"
+      #- shared.docker.sock:/var/run/docker.sock:ro
     networks:
-      - "proxy"
+      - proxy
     labels:
       # - "com.centurylinklabs.watchtower.enable=false"
       - "traefik.enable=true"
@@ -22,3 +23,12 @@ services:
 #      - "traefik.tcp.routers.portainer.rule=HostSNI(`docker.jekotia.net`) && PathPrefix(`/api/websocket/`)"
 #      - "traefik.tcp.routers.portainer.tls=true"
 #      - "traefik.tcp.services.portainer.loadbalancer.server.port=9000"
+
+volumes:
+  #"${_PORTAINER_DATA}/portainer:/data"
+  portainer.data.main:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${_PORTAINER_DATA}/portainer
+      o: bind

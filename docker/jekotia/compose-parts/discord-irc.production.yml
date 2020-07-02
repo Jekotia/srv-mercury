@@ -5,4 +5,12 @@ services:
     container_name: discord-irc.app
     restart: unless-stopped
     volumes:
-    - ${_DISCORDIRC_DATA}:/data
+    - discordirc.data.main:/data
+
+volumes:
+  discordirc.data.main:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${_DISCORDIRC_DATA}
+      o: bind
