@@ -1,0 +1,27 @@
+version: "3.3"
+volumes:
+  nextcloud.data.db:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${_DATA}/nextcloud/db
+      o: bind
+  nextcloud.data.web:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${_DATA}/nextcloud/web
+      o: bind
+  nextcloud.data.storage:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${_DATA}/nextcloud/storage
+      o: bind
+  #${_DATA}/nextcloud/data:/var/www/html
+  #nextcloud.:
+  #  driver: local
+  #  driver_opts:
+  #    type: none
+  #    device: ${_DATA}/nextcloud/
+  #    o: bind

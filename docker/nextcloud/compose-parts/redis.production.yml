@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+  # https://hub.docker.com/_/nextcloud/
+  nextcloud.redis:
+    image: redis:alpine
+    container_name: nextcloud.redis
+    restart: always
+    networks:
+      - nextcloud

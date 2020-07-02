@@ -1,0 +1,53 @@
+version: "3.3"
+services:
+  # https://hub.docker.com/_/nextcloud/
+  nextcloud.app:
+    image: nextcloud:apache
+    container_name: nextcloud.app
+    restart: always
+    depends_on:
+      - nextcloud.db
+      - nextcloud.redis
+    volumes:
+      - nextcloud.data.web:/var/www/html
+      - nextcloud.data.storage:/storage
+    environment:
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_SECURE=ssl
+      - SMTP_PORT=587
+      - SMTP_AUTHTYPE=login
+      - SMTP_NAME=${SECRETS_SMTP_USER}
+      - SMTP_PASSWORD=${SECRETS_SMTP_PASS}
+      - SMTP_FROM_ADDRESS=${SECRETS_SMTP_USER}
+      - SMTP_DOMAIN=jekotia.net
+
+      - NEXTCLOUD_DATA_DIR=/storage
+      - NEXTCLOUD_TRUSTED_DOMAINS=cloud.jekotia.net *.jekotia.net
+      - TRUSTED_PROXIES=172.168.0.0/0
+
+      - REDIS_HOST=nextcloud.redis
+
+      - NEXTCLOUD_ADMIN_USER=${SECRETS_NEXTCLOUD_ADMIN_USER}
+      - NEXTCLOUD_ADMIN_PASS=${SECRETS_NEXTCLOUD_ADMIN_PASS}
+
+      - MYSQL_DATABASE=${SECRETS_NEXTCLOUD_MYSQL_DATABASE}
+      - MYSQL_USER=${SECRETS_NEXTCLOUD_MYSQL_USER}
+      - MYSQL_PASSWORD=${SECRETS_NEXTCLOUD_MYSQL_PASSWORD}
+      - MYSQL_HOST=nextcloud.db:3306
+    networks:
+      - nextcloud
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.rule=Host(`cloud.jekotia.net`)"
+      - "traefik.http.routers.nextcloud.entrypoints=websecure"
+      - "traefik.http.routers.nextcloud.tls.certresolver=myresolver"
+      - "traefik.http.routers.nextcloud.middlewares=nextcloud,nextcloud_redirect"
+
+      #- "traefik.http.middlewares.nextcloud.headers.customFrameOptionsValue=ALLOW-FROM https://jekotia.net"
+      #- "traefik.http.middlewares.nextcloud.headers.contentSecurityPolicy=frame-ancestors 'self' jekotia.net *.jekotia.net"
+      - "traefik.http.middlewares.nextcloud.headers.stsSeconds=155520011"
+      - "traefik.http.middlewares.nextcloud.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.nextcloud.headers.stsPreload=true"
+      - "traefik.http.middlewares.nextcloud_redirect.redirectregex.regex=/.well-known/(card|cal)dav"
+      - "traefik.http.middlewares.nextcloud_redirect.redirectregex.replacement=/remote.php/dav/"

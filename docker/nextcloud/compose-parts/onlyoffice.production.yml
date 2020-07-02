@@ -1,0 +1,31 @@
+version: "3.3"
+services:
+  # https://hub.docker.com/_/nextcloud/
+  # trafeik rules from https://github.com/jnsgruk/nextcloud-docker-compose
+  nextcloud.onlyoffice:
+    image: onlyoffice/documentserver:latest
+    container_name: nextcloud.onlyoffice
+    restart: always
+    networks:
+      - proxy
+    expose:
+      - 80
+      - 443
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.onlyoffice.rule=Host(`office.jekotia.net`)"
+      - "traefik.http.routers.onlyoffice.entrypoints=websecure"
+      - "traefik.http.routers.onlyoffice.tls.certresolver=myresolver"
+      - "traefik.http.routers.onlyoffice.tls=true"
+      - "traefik.http.routers.onlyoffice.middlewares=onlyoffice-headers@docker"
+
+      - "traefik.http.routers.onlyoffice-root.rule=(Host(`office.jekotia.net`) && Path(`/`))"
+      - "traefik.http.routers.onlyoffice-root.entrypoints=websecure,web"
+      - "traefik.http.routers.onlyoffice-root.tls=true"
+      #- "traefik.http.routers.onlyoffice-root.service=nc-app-nextcloud"
+      - "traefik.http.routers.onlyoffice-root.middlewares=onlyoffice-root@docker"
+
+      - "traefik.http.middlewares.onlyoffice-root.redirectregex.regex=^(.*)"
+      - "traefik.http.middlewares.onlyoffice-root.redirectregex.replacement=https://cloud.jekotia.net/"
+      - "traefik.http.middlewares.onlyoffice-root.redirectregex.permanent=true"
+      - "traefik.http.middlewares.onlyoffice-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
