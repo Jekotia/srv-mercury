@@ -153,6 +153,20 @@ done
 						exit 1
 					fi
 				;;
+				--prod-suffix)
+					if [ -z "${PROD_SUFFIX}" ] ; then
+						ARG_INDEX=$((ARG_INDEX + 1))
+
+						value="${ARGS[$ARG_INDEX]}"
+						debug -v "value"
+
+						PROD_SUFFIX="${value%/}"
+
+					else
+						echo "--prod-suffix can only be provided once."
+						exit 1
+					fi
+				;;
 				*)
 					echo "Arg not supported: '${arg}'"
 					exit 1
@@ -174,6 +188,10 @@ done
 			OUTPUT_DIR="${INPUT_DIR}"
 		fi
 		OUTPUT_DIR="$(get_absolute_path "${OUTPUT_DIR}")" ; debug -v "OUTPUT_DIR"
+
+		if [ -z "${PROD_SUFFIX}" ] ; then
+			PROD_SUFFIX=".production.yml"
+		fi
 
 		declare -a ENV_PARTS=(
 			"common.env"
@@ -240,7 +258,7 @@ done
 			fi
 		#<< ENV
 		debug ""
-	done < <(find "$COMPOSE_PARTS_DIR" -name "*.production.yml" -type f -print0)
+	done < <(find "$COMPOSE_PARTS_DIR" -name "*${PROD_SUFFIX}" -type f -print0)
 #<< LOOP_OVER_COMPOSE_FILES
 
 if mv "${ENV_OUTPUT_TEMP}" "${ENV_OUTPUT_FILE}" ; then
