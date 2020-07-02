@@ -88,7 +88,7 @@ EOF
 			|| { merge_fail "${file_in_short}" "${file_out_short}" ; return 1; }
 		fi
 
-		echo "# END -> ${file_in_short}" >> "${file_out}" \
+		echo "#  END  -> ${file_in_short}" >> "${file_out}" \
 		|| { merge_fail "${file_in_short}" "${file_out_short}" ; return 1; }
 		
 		echo "" >> "${file_out}" \
@@ -196,6 +196,7 @@ EOF
 				;;
 				*)
 					echo "Arg not supported: '${arg}'"
+					echo
 					help
 					exit 1
 				;;
@@ -253,6 +254,15 @@ EOF
 if [ -n "${CALL_HELP}" ] ; then
 	help ; exit 0
 fi
+
+#-> CHECK FOR A SHARED ENV FILE ABOVE THE INPUT DIR
+	shared_env_file="$(dirname "${INPUT_DIR}")/shared.env"
+	debug -v env_file
+	if [ -e "${shared_env_file}" ] ; then
+		debug "shared_env_file exists"
+		echo "Using     ENV file ${shared_env_file}"
+		file_merge "$shared_env_file" "${ENV_OUTPUT_TEMP}" || exit 1
+	fi
 
 #>> LOOP_OVER_STATIC_ENV_FILES
 	debug "BEGIN LOOP_OVER_STATIC_ENV_FILES"
