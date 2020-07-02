@@ -1,13 +1,26 @@
 #! /bin/bash
 #DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 declare -a ARGS
 for arg in "$@" ; do
 	case $arg in
 		--debug) _DEBUG="true";;
+		--help|-h) CALL_HELP="true" ; break ;;
 		*) ARGS+=("$arg") ;;
 	esac
 done
 
+function help() {
+cat << EOF
+Usage: $0 <args>
+    --input         The input directory. Defaults to current dir
+    --output        The output directory. Defaults to the output directory
+    --prod-suffix   The suffix used when searching for production YAML
+                    files. Defaults to ".production.yml"
+    --test          Only test the result using 'docker-compose config';
+                    does not write outside of /tmp
+EOF
+}
 
 #>> FUNCTIONS
 	function debug() {
@@ -167,8 +180,23 @@ done
 						exit 1
 					fi
 				;;
+				--test)
+					if [ -z "${TEST_ONLY}" ] ; then
+						#ARG_INDEX=$((ARG_INDEX + 1))
+
+						value="true"
+						debug -v "value"
+
+						TEST_ONLY="${value%/}"
+
+					else
+						echo "--test can only be provided once."
+						exit 1
+					fi
+				;;
 				*)
 					echo "Arg not supported: '${arg}'"
+					help
 					exit 1
 				;;
 			esac
@@ -203,10 +231,15 @@ done
 		COMPOSE_PARTS_DIR="${INPUT_DIR}/compose-parts" ; debug -v "COMPOSE_PARTS_DIR"
 		ENV_PARTS_DIR="${INPUT_DIR}/env-parts" ; debug -v "ENV_PARTS_DIR"
 
-		ENV_OUTPUT_TEMP="$(mktemp /tmp/compose-manager.env.tmp.XXXXXXXXXX)" ; debug -v "ENV_OUTPUT_TEMP"
+		OUTPUT_TEMP="$(mktemp -d /tmp/compose-manager.XXXXXXXXXX)"
+		ENV_OUTPUT_TEMP="${OUTPUT_TEMP}/.env" ; debug -v "ENV_OUTPUT_TEMP"
+		touch "${ENV_OUTPUT_TEMP}"
 		ENV_OUTPUT_FILE="${OUTPUT_DIR}/.env" ; debug -v "ENV_OUTPUT_FILE"
-		COMPOSE_OUTPUT_TEMP="$(mktemp /tmp/compose-manager.compose.tmp.XXXXXXXXXX)" ; debug -v "COMPOSE_OUTPUT_TEMP"
+		
+		COMPOSE_OUTPUT_TEMP="${OUTPUT_TEMP}/docker-compose.yml" ; debug -v "COMPOSE_OUTPUT_TEMP"
+		touch "${COMPOSE_OUTPUT_TEMP}"
 		COMPOSE_OUTPUT_FILE="${OUTPUT_DIR}/docker-compose.yml" ; debug -v "COMPOSE_OUTPUT_FILE"
+
 		debug "END VARS"
 	#<< VARS
 	if [ ! -d "${OUTPUT_DIR}" ] ; then
@@ -216,6 +249,10 @@ done
 	cd "${INPUT_DIR}" || exit 1
 	debug "END SETUP"
 #<< SETUP
+
+if [ -n "${CALL_HELP}" ] ; then
+	help ; exit 0
+fi
 
 #>> LOOP_OVER_STATIC_ENV_FILES
 	debug "BEGIN LOOP_OVER_STATIC_ENV_FILES"
@@ -255,11 +292,29 @@ done
 				env_file_short="${env_file_short//env-parts\//}"
 				echo "          ENV file ${env_file_short}"
 				file_merge "$env_file" "${ENV_OUTPUT_TEMP}" || exit 1
+				ENV_PARTS+=("$env_file")
 			fi
 		#<< ENV
 		debug ""
 	done < <(find "$COMPOSE_PARTS_DIR" -name "*${PROD_SUFFIX}" -type f -print0)
 #<< LOOP_OVER_COMPOSE_FILES
+
+if [ -n "$TEST_ONLY" ] ; then
+	source /etc/environment || exit 1
+	
+	for file in "${ENV_PARTS[@]}" ; do
+		env_file="${ENV_PARTS_DIR}/$file"
+		if [ -e "$env_file" ] ; then
+			source "${env_file}" || exit 1
+		fi
+	done
+
+	cd "${OUTPUT_TEMP}" || exit 1
+	docker-compose ${COMPOSE_STRING[@]} config #-q
+
+	rm -rf "${OUTPUT_TEMP}"
+	exit $?
+fi
 
 if mv "${ENV_OUTPUT_TEMP}" "${ENV_OUTPUT_FILE}" ; then
 	debug "Moved '${ENV_OUTPUT_TEMP}' to '${ENV_OUTPUT_FILE}'"
