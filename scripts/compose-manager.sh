@@ -209,7 +209,7 @@ done
 			debug "env_file exists"
 			env_file_short="$(get_relative_path "${env_file}")"
 			env_file_short="${env_file_short//env-parts\//}"
-			echo "Using ENV     file ${env_file_short}"
+			echo "Using     ENV file ${env_file_short}"
 			file_merge "$env_file" "${ENV_OUTPUT_TEMP}" || exit 1
 		fi
 	done
@@ -235,7 +235,7 @@ done
 				#ENV_STRING+=("--env-file=${env_file}")
 				env_file_short="$(get_relative_path "${env_file}")"
 				env_file_short="${env_file_short//env-parts\//}"
-				echo "Using ENV     file ${env_file_short}"
+				echo "          ENV file ${env_file_short}"
 				file_merge "$env_file" "${ENV_OUTPUT_TEMP}" || exit 1
 			fi
 		#<< ENV
